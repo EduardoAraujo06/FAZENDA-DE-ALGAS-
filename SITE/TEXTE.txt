@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Emissão de CO2</title>
+</head>
+<body>
+    <h1>Calculadora de Emissão de CO2</h1>
+    <form id="calcForm">
+        <label for="tipoVeiculo">Tipo de Veículo:</label>
+        <select id="tipoVeiculo">
+            <option value="carro">Carro</option>
+            <option value="caminhao">Caminhão</option>
+            <option value="motocicleta">Motocicleta</option>
+        </select>
+        <br>
+        <label for="distanciaPercorrida">Distância Percorrida (km):</label>
+        <input type="number" id="distanciaPercorrida" step="0.1">
+        <br>
+        <button type="button" onclick="calcularEmissaoCO2()">Calcular Emissão de CO2</button>
+        <button type="button" onclick="resetarFormulario()">Resetar</button>
+    </form>
+    <p id="resultado"></p>
+    
+    <script>
+      function calcularEmissaoCO2() {
+        const tipoVeiculo = document.getElementById("tipoVeiculo").value;
+        const distanciaPercorrida = parseFloat(document.getElementById("distanciaPercorrida").value);
+
+        // Valores médios de emissão de CO2 (em kg) por tipo de veículo
+        const valoresMediosEmissaoCO2 = {
+          carro: 2.31, // kg CO2 por litro de gasolina
+          caminhao: 3.0, // kg CO2 por litro de diesel
+          motocicleta: 1.8, // kg CO2 por litro de gasolina
+        };
+
+        // Calcular a emissão de CO2 com base no tipo de veículo
+        const emissaoCO2PorLitro = valoresMediosEmissaoCO2[tipoVeiculo];
+        const emissaoCO2 = distanciaPercorrida * emissaoCO2PorLitro;
+
+        // Estimativa de absorção de CO2 por árvore por ano (em kg)
+        const absorcaoCO2PorArvorePorAno = 22;
+        const numeroArvoresNecessarias = (emissaoCO2 / absorcaoCO2PorArvorePorAno).toFixed(2);
+
+        // Exibir o resultado na página
+        const resultadoElement = document.getElementById("resultado");
+        resultadoElement.textContent = `A emissão de CO2 é de aproximadamente ${emissaoCO2.toFixed(2)} kg. Para compensar essa emissão, seriam necessárias aproximadamente ${numeroArvoresNecessarias} árvores por ano.`;
+      }
+
+      function resetarFormulario() {
+        document.getElementById("calcForm").reset();
+        document.getElementById("resultado").textContent = "";
+      }
+    </script>
+</body>
+</html>
